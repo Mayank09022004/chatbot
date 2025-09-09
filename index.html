@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AI Chatbot Assistant</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      font-family: 'Inter', sans-serif;
+      color: #f0f0f0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem;
+    }
+    #chatbox {
+      width: 100%;
+      max-width: 600px;
+      height: 500px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 1rem;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 0 20px rgba(118, 75, 162, 0.5);
+    }
+    #messages {
+      flex: 1;
+      padding: 1rem;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: #764ba2 transparent;
+    }
+    #messages::-webkit-scrollbar {
+      width: 8px;
+    }
+    #messages::-webkit-scrollbar-thumb {
+      background-color: #764ba2;
+      border-radius: 4px;
+    }
+    .message {
+      margin-bottom: 1rem;
+      max-width: 80%;
+      padding: 0.75rem 1rem;
+      border-radius: 1rem;
+      line-height: 1.4;
+    }
+    .user {
+      background: #764ba2;
+      align-self: flex-end;
+      border-bottom-right-radius: 0;
+    }
+    .bot {
+      background: #4c1d95;
+      align-self: flex-start;
+      border-bottom-left-radius: 0;
+    }
+    #input-area {
+      display: flex;
+      padding: 1rem;
+      background: rgba(255, 255, 255, 0.05);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    #input-area input {
+      flex: 1;
+      padding: 0.75rem 1rem;
+      border-radius: 9999px;
+      border: none;
+      outline: none;
+      background: rgba(255, 255, 255, 0.15);
+      color: #f0f0f0;
+      font-size: 1rem;
+    }
+    #input-area button {
+      margin-left: 1rem;
+      background: #764ba2;
+      border: none;
+      border-radius: 9999px;
+      padding: 0 1.5rem;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    #input-area button:hover {
+      background: #5a2e8a;
+    }
+  </style>
+</head>
+<body>
+  <div id="chatbox" role="region" aria-label="Chatbot conversation">
+    <div id="messages" aria-live="polite" aria-relevant="additions"></div>
+    <form id="input-area" aria-label="Send message form">
+      <input type="text" id="user-input" placeholder="Type your message..." autocomplete="off" required />
+      <button type="submit" aria-label="Send message">Send</button>
+    </form>
+  </div>
+
+  <script>
+    const messagesEl = document.getElementById('messages');
+    const form = document.getElementById('input-area');
+    const input = document.getElementById('user-input');
+
+    // Simple simulated AI responses
+    const responses = [
+      "That's interesting! Tell me more.",
+      "I see. How does that make you feel?",
+      "Can you elaborate on that?",
+      "Why do you think that is?",
+      "Let's explore that further.",
+      "I'm here to help you with anything you need.",
+      "Could you clarify that for me?",
+      "That's a great point!",
+      "How can I assist you today?",
+      "Thanks for sharing that."
+    ];
+
+    function appendMessage(text, sender) {
+      const msg = document.createElement('div');
+      msg.classList.add('message', sender);
+      msg.textContent = text;
+      messagesEl.appendChild(msg);
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+    }
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      const userText = input.value.trim();
+      if (!userText) return;
+      appendMessage(userText, 'user');
+      input.value = '';
+      // Simulate AI response with delay
+      setTimeout(() => {
+        const botResponse = responses[Math.floor(Math.random() * responses.length)];
+        appendMessage(botResponse, 'bot');
+      }, 1000 + Math.random() * 1000);
+    });
+
+    // Greet user on load
+    window.onload = () => {
+      appendMessage("Hello! I'm your AI assistant. How can I help you today?", 'bot');
+    };
+  </script>
+</body>
+</html>
